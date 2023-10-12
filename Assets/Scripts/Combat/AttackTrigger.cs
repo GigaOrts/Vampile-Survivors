@@ -1,17 +1,18 @@
 using System.Collections;
+using RogueLike.Animations;
 using UnityEngine;
 
-namespace RogueLike
+namespace RogueLike.Combat
 {
     public class AttackTrigger : MonoBehaviour
     {
         private Weapon _weapon;
-        private PlayerAnimationHandler _playerAnimationHandler;
+        private PlayerAnimationHandler _animationHandler;
 
         private void Awake()
         {
             _weapon = GetComponent<Weapon>();
-            _playerAnimationHandler = GetComponentInParent<PlayerAnimationHandler>();
+            _animationHandler = GetComponentInParent<PlayerAnimationHandler>();
         }
 
         private void Start()
@@ -25,7 +26,7 @@ namespace RogueLike
             
             while (true)
             {
-                yield return _playerAnimationHandler.SetAttackStateAsync();
+                yield return _animationHandler.SetAttackStateAsync();
                 
                 AttackAllInRange();
                 yield return new WaitForSeconds(delay);
@@ -36,7 +37,7 @@ namespace RogueLike
         {
             var origin = new Vector2(transform.position.x, transform.position.y);
 
-            var circleDirection = _playerAnimationHandler.IsFlippedLeft ? Vector2.left : Vector2.right;
+            var circleDirection = _animationHandler.IsFlippedLeft ? Vector2.left : Vector2.right;
 
             var circleCastAll = Physics2D.CircleCastAll(origin + circleDirection,
                 _weapon.DamageAreaRadius, Vector2.zero, Mathf.Infinity, LayerMask.GetMask("Damageable"));

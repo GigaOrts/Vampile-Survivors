@@ -1,31 +1,27 @@
+using RogueLike.Animations;
 using UnityEngine;
 
-namespace RogueLike
+namespace RogueLike.Combat
 {
+    [RequireComponent(typeof(Rigidbody2D))]
     public class DamageReciever : MonoBehaviour
     {
         [SerializeField] private float _health;
         
-        private EnemyAnimationHandler _animationHandler;
+        private AnimationHandler _animationHandler;
         private Rigidbody2D _rigidbody;
 
-        public bool IsAlive => Health > 0;
-
-        public float Health
-        {
-            get => _health;
-            protected set => _health = Mathf.Max(value, 0);
-        }
+        public bool IsAlive => _health > 0;
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
-            _animationHandler = GetComponent<EnemyAnimationHandler>();
+            _animationHandler = GetComponent<AnimationHandler>();
         }
 
-        public virtual void TakeDamage(float damage)
+        public void TakeDamage(float damage)
         {
-            Health -= damage;
+            _health -= Mathf.Max(_health - damage, 0);
             _animationHandler.SetDamagedState();
 
             if (IsAlive == false)

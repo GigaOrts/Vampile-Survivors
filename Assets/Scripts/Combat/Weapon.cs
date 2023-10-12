@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-namespace RogueLike
+namespace RogueLike.Combat
 {
     public class Weapon : MonoBehaviour
     {
         [SerializeField] private float _damage  = 1f;
         [SerializeField] private float _cooldown = 1f;
-        [SerializeField] private float _damageAreaRadius = 2.5f;
-        [SerializeField] private float _pushForce = 20f;
+        [SerializeField] private float _damageAreaRadius = 2.7f;
+        [SerializeField] private float _pushForce = 80f;
 
         public float Damage => _damage;
         public float PushForce => _pushForce;
