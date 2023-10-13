@@ -45,7 +45,7 @@ namespace RogueLike.Combat
         {
             gameObject.GetComponent<Collider2D>().enabled = false;
 
-            var deathDelay = 0.02f;
+            var deathDelay = 0.15f;
             Destroy(gameObject, deathDelay);
         }
 

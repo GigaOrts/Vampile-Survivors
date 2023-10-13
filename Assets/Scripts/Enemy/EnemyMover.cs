@@ -1,5 +1,4 @@
 ﻿using RogueLike.Core;
-using UnityEngine;
 
 namespace RogueLike.Enemy
 {
