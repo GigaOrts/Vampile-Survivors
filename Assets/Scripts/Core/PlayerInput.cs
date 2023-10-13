@@ -23,7 +23,7 @@ namespace RogueLike.Core
             _direction = new Vector2(_horizontalInput, _verticalInput);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             _mover.Move(_direction);
         }

@@ -1,17 +1,17 @@
 using RogueLike.Animations;
 using UnityEngine;
 
-namespace RogueLike
+namespace RogueLike.Core
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class Mover : MonoBehaviour
     {
-        [SerializeField] private float _speed = 200f;
+        [SerializeField] private float _speed = 100f;
 
         private Rigidbody2D _rigidbody;
         private AnimationHandler _animationHandler;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
             _animationHandler = GetComponent<AnimationHandler>();

@@ -1,4 +1,6 @@
+using System.Collections;
 using RogueLike.Animations;
+using RogueLike.Enemy;
 using UnityEngine;
 
 namespace RogueLike.Combat
@@ -7,7 +9,7 @@ namespace RogueLike.Combat
     public class DamageReciever : MonoBehaviour
     {
         [SerializeField] private float _health;
-        
+
         private AnimationHandler _animationHandler;
         private Rigidbody2D _rigidbody;
 
@@ -21,7 +23,7 @@ namespace RogueLike.Combat
 
         public void TakeDamage(float damage)
         {
-            _health -= Mathf.Max(_health - damage, 0);
+            _health -= damage;
             _animationHandler.SetDamagedState();
 
             if (IsAlive == false)
@@ -34,12 +36,32 @@ namespace RogueLike.Combat
         {
             var pushDirection = transform.position - fromPosition;
 
+            StartCoroutine(nameof(PauseMove));
+
             _rigidbody.AddForce(pushDirection.normalized * force, ForceMode2D.Impulse);
         }
 
         private void Die()
         {
+            gameObject.GetComponent<Collider2D>().enabled = false;
 
+            var deathDelay = 0.02f;
+            Destroy(gameObject, deathDelay);
+        }
+
+        private IEnumerator PauseMove()
+        {
+            var mover = GetComponent<EnemyMover>();
+            mover.enabled = false;
+
+            var minVelocity = 0.5f;
+            while (Mathf.Abs(_rigidbody.velocity.x) > minVelocity ||
+                   Mathf.Abs(_rigidbody.velocity.y) > minVelocity)
+            {
+                yield return null;
+            }
+
+            mover.enabled = true;
         }
     }
 }

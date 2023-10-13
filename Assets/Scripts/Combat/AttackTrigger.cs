@@ -45,9 +45,9 @@ namespace RogueLike.Combat
             foreach (var hit2D in circleCastAll)
             {
                 var target = hit2D.collider.gameObject.GetComponent<DamageReciever>();
-                
-                target.PushBack(_weapon.transform.position, _weapon.PushForce);
+
                 _weapon.Attack(target);
+                target.PushBack(_weapon.transform.position, _weapon.PushForce);
             }
         }
     }

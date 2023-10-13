@@ -1,16 +1,17 @@
+using RogueLike.Core;
 using UnityEngine;
+// TODO партиклы при смерти
+// TODO выпадение опыта/золота
 
-public class EnemyAI : MonoBehaviour
+namespace RogueLike.Enemy
 {
-    // Start is called before the first frame update
-    void Start()
+    public class EnemyAI : MonoBehaviour
     {
-        
-    }
+        public Player Target { get; private set; }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Start()
+        {
+            Target = FindObjectOfType<Player>();
+        }
     }
 }
