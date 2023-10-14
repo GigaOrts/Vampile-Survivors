@@ -8,7 +8,7 @@ namespace RogueLike.UI
     public class HealthBar : MonoBehaviour
     {
         [SerializeField] private Health _health;
-        [SerializeField] private float _changeStep = 0.5f;
+        [SerializeField] private float _changeStep = 1f;
 
         private Slider _slider;
         private Coroutine _coroutine;
@@ -42,7 +42,7 @@ namespace RogueLike.UI
         {
             while (_slider.value != targetValue)
             {
-                _slider.value = Mathf.MoveTowards(_health.CurrentValue, targetValue, _changeStep * Time.deltaTime);
+                _slider.value = Mathf.MoveTowards(_slider.value, targetValue, _changeStep * Time.deltaTime);
                 yield return null;
             }
         }
