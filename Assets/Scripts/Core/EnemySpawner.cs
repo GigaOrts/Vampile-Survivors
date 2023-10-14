@@ -1,3 +1,4 @@
+using RogueLike.Enemy;
 using System.Collections;
 using UnityEngine;
 
@@ -6,10 +7,13 @@ namespace RogueLike.Core
     public class EnemySpawner : MonoBehaviour
     {
         [SerializeField] private float _spawnDelay = 5f;
-        [SerializeField] private int _additionalDelayPerWave = 1;
+        [SerializeField] private int _delayPerWave = 1;
         [SerializeField] private int _countOfEnemies = 3;
         [SerializeField] private int _enemiesPerWave = 2;
         [SerializeField] private float _radius = 10f;
+        
+        [SerializeField] private int _totalEnemies = 50;
+        [SerializeField] private int _maxTotalEnemies = 50;
 
         const float maxDegree = 360;
 
@@ -34,7 +38,9 @@ namespace RogueLike.Core
         {
             _elapsedTime += Time.deltaTime;
 
-            if (_elapsedTime > _spawnDelay)
+            _totalEnemies = FindObjectsOfType<EnemyAI>().Length;
+
+            if (_elapsedTime > _spawnDelay && _totalEnemies < _maxTotalEnemies)
             {
                 _elapsedTime = 0;
                 UpdateWave();
@@ -45,13 +51,14 @@ namespace RogueLike.Core
 
         private void LateUpdate()
         {
-            transform.position = _player.transform.position;
+            if (_player != null)
+                transform.position = _player.transform.position;
         }
 
         private void UpdateWave()
         {
             _countOfEnemies += _enemiesPerWave;
-            _spawnDelay += _additionalDelayPerWave;
+            _spawnDelay += _delayPerWave;
         }
 
         private void SetAngleStep()
@@ -61,14 +68,20 @@ namespace RogueLike.Core
 
         private IEnumerator SpawnCircleEnemies()
         {
+            if (_player == null)
+                yield break;
+
             for (int i = 0; i < _countOfEnemies; i++)
             {
+                if (_totalEnemies >= _maxTotalEnemies)
+                    yield break;
+
                 var newEnemy = Instantiate(_enemy);
                 newEnemy.transform.position = new Vector3(
                     transform.position.x + _radius * Mathf.Cos(_angleStep * (i + 1) * Mathf.Deg2Rad),
                     transform.position.y + _radius * Mathf.Sin(_angleStep * (i + 1) * Mathf.Deg2Rad), 0);
 
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }

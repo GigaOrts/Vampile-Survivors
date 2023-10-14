@@ -20,6 +20,9 @@ namespace RogueLike.Enemy
 
         private void FixedUpdate()
         {
+            if (_target == null)
+                return;
+
             var direction = _target.transform.position - transform.position;
             base.Move(direction);
         }

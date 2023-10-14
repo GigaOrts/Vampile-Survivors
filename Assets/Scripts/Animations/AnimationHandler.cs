@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using RogueLike.Core;
+using UnityEngine;
 
 namespace RogueLike.Animations
 {
+    [RequireComponent(typeof(Health))]
     public class AnimationHandler : MonoBehaviour
     {
         protected Animator Animator;
+        private Health _health;
         private readonly Vector3 _xPositiveScale = new(1, 1, 1);
         private readonly Vector3 _xNegativeScale = new(-1, 1, 1);
 
@@ -14,8 +17,19 @@ namespace RogueLike.Animations
 
         public bool IsFlippedLeft { get; private set; }
 
+        private void OnEnable()
+        {
+            _health.DamageTaken += SetDamagedState;
+        }
+
+        private void OnDisable()
+        {
+            _health.DamageTaken -= SetDamagedState;
+        }
+
         protected virtual void Awake()
         {
+            _health = GetComponent<Health>();
             Animator = GetComponentInChildren<Animator>();
         }
 

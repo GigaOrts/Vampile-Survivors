@@ -1,5 +1,6 @@
 using System.Collections;
 using RogueLike.Animations;
+using RogueLike.Core;
 using UnityEngine;
 
 namespace RogueLike.Combat
@@ -44,10 +45,11 @@ namespace RogueLike.Combat
 
             foreach (var hit2D in circleCastAll)
             {
-                var target = hit2D.collider.gameObject.GetComponent<DamageReciever>();
+                var targetHealth = hit2D.collider.gameObject.GetComponent<Health>();
+                var damageReciever = hit2D.collider.gameObject.GetComponent<DamageReciever>();
 
-                _weapon.Attack(target);
-                target.PushBack(_weapon.transform.position, _weapon.PushForce);
+                _weapon.Attack(targetHealth);
+                damageReciever.PushBack(_weapon.transform.position, _weapon.PushForce);
             }
         }
     }
